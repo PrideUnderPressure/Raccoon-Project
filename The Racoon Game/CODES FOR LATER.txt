@@ -1,0 +1,96 @@
+ 
+        //WALL LEFT ENTER
+        if (collision.gameObject.CompareTag("Fire") && _isGrounded == false && dir.x > 0)
+        {
+            Debug.Log("WALLED");
+
+            //States reset
+            canJumpAni = false;
+            isJumping = false;
+            walledLeft = true;
+
+            //Horizontal Sprite Flip
+            gameObject.transform.localScale = new Vector2(1, 1);
+
+            anim.SetBool("isWallClimbing", true);
+        }
+
+        //WALL RIGHT ENTER
+        if (collision.gameObject.CompareTag("Fire") && _isGrounded == false && dir.x < 0)
+        {
+
+            Debug.Log("WALLED");
+
+            //States reset
+            canJumpAni = false;
+            isJumping = false;
+            walledRight = true;
+
+            //Horizontal Sprite Flip
+            gameObject.transform.localScale = new Vector2(-1, 1);
+
+            anim.SetBool("isWallClimbing", true);
+        }
+
+
+                //Exit WALL LEFT
+        if (collision.gameObject.CompareTag("WasWallLeft"))
+        {
+            Debug.Log("NOT WALLED YO");
+
+            walledLeft = false;
+            anim.SetBool("isWallClimbing", false);
+            canJumpAni = true;
+            canDown = true;
+            touchingWallLeft = false;
+        }
+        //Exit WALL RIGHT
+        if (collision.gameObject.CompareTag("WasWallRight"))
+        {
+            Debug.Log("NOT WALLED YO");
+
+            walledRight = false;
+            anim.SetBool("isWallClimbing", false);
+            canJumpAni = true;
+            canDown = true;
+            touchingWallRight = false;
+        }
+
+
+
+                if (rotatedRight)
+        {
+            rayWalledRight = false;
+            RaycastHit2D hit = Physics2D.Raycast(castPos, Vector2.right, laserLength, layerMask, 0);
+            RaycastHit2D hitTopSide = Physics2D.Raycast(castPosTop, Vector2.right, laserLength, layerMask, 0);
+
+            if (hit.collider != null || hitTopSide != null)
+            {
+                rayWalledLeft = true;
+
+                if (hit.collider != null)
+                {
+                    Debug.Log("BOT hit RIGHT side wall " + hit.collider.tag);
+                    Debug.DrawRay(castPos, Vector2.right * laserLength, Color.green);
+                }
+                else if (hit.collider == null)
+                {
+                    Debug.DrawRay(castPos, Vector2.right * laserLength, Color.green);
+                }
+
+                if (hitTopSide.collider != null)
+                {
+                    Debug.Log("TOP hit RIGHT side wall " + hit.collider.tag);
+                    Debug.DrawRay(castPosTop, Vector2.right * laserLength, Color.green);
+                }
+                else if (hitTopSide.collider == null)
+                {
+                    Debug.DrawRay(castPosTop, Vector2.right * laserLength, Color.red);
+                }
+            }
+            else
+            {
+                Debug.DrawRay(castPos, Vector2.right * laserLength, Color.red);
+                rayWalledLeft = false;
+            }
+        }
